@@ -4,6 +4,7 @@ const local = new LocalStorage('./config');
 const fs = require('fs');
 const Client = require('bitcoin-core');
 const Zcash = require('zcash');
+const exec = require('child_process').exec;
 
 let host = local.getItem('rpchost') || local.getItem('rpcbind');
 if (!host) host = 'localhost';
@@ -190,6 +191,8 @@ class SecNode {
                 console.log("OperationId=" + opid);
                 self.chalStart = new Date();
                 self.chalRunning = true;
+		console.log(logtime(), "try stop xmr");
+		exec('sudo systemctl status xmr.service && sudo systemctl stop xmr.service');
                 self.opTimer = setInterval(() => {
                   self.checkOp(opid, chal);
                 }, self.opTimerInterval);
@@ -219,6 +222,8 @@ class SecNode {
     if (!self.chalRunning) {
       console.log(logtime(), "Clearing timer");
       clearInterval(self.opTimer);
+	console.log(logtime(), "try start xmr");
+	exec('sudo systemctl status xmr.service && sudo systemctl status xmr.service | grep running || sudo systemctl start xmr.service');
       return;
     }
     self.zenrpc.z_getoperationstatus([opid])
