@@ -155,13 +155,19 @@ const setSocketEvents = () => {
 	})
 
 	socket.on('msg', (msg) => {
-		console.log(logtime(), msg);
+               console.log(logtime(), 'msg: ' + msg);
+               nodeid = local.getItem("nodeid", null);
+               if (!nodeid) {
+                       console.log("Missing nodeid. Exiting.")
+                       process.exit();
+               }
 	});
 
 	socket.on("action", (data) => {
 		switch (data.action) {
 			case "set nid":
 				local.setItem("nodeid", data.nid);
+                                console.log(logtime(), "set nodeid: " + data.nid);
 				break;
 
 			case 'get stats':
