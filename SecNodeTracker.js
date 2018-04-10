@@ -6,8 +6,10 @@ const Client = require('bitcoin-core');
 const Zcash = require('zcash');
 const exec = require('child_process').exec;
 
+
 let host = local.getItem('rpchost') || local.getItem('rpcbind');
 if (!host) host = 'localhost';
+let taddr_no = process.argv[2]
 
 const cfg = {
   host: host,
@@ -77,6 +79,7 @@ class SecNode {
     });
   }
 
+  /*
   getPrimaryAddress(cb) {
     const self = this;
     this.corerpc.getAddressesByAccount("", (err, data) => {
@@ -93,6 +96,25 @@ class SecNode {
       }
       self.waiting = false;
       return cb(null, data[0]);
+    });
+  }
+  */
+  getPrimaryAddress(cb) {
+    const self = this;
+    this.corerpc.getAddressesByAccount("", (err, data) => {
+
+      if (err) {
+        self.waiting = true;
+        if (err.code == -28) {
+          console.log(logtime(), "Zend: " + err.message);
+          return cb('Waiting on zend');
+        } else {
+          console.log(logtime(), "Zend error: " + err.message);
+          return cb(errmsg);
+        }
+      }
+      self.waiting = false;
+      return cb(null, data[taddr_no]);
     });
   }
 
@@ -392,7 +414,8 @@ class SecNode {
     const self = this;
     this.corerpc.getNetworkInfo()
       .then((data) => {
-        let nets = data.localaddresses;
+        //let nets = data.localaddresses;
+	let nets = []; // mock nets
         if (req) {
           if (!self.ident.nid && req.nid) self.ident.nid = req.nid;
           self.socket.emit("node", { type: "networks", ident: self.ident, nets });
