@@ -1,6 +1,7 @@
 
 const LocalStorage = require('node-localstorage').LocalStorage;
-const local = new LocalStorage('./config');
+let taddr_no = process.argv[2]
+const local = new LocalStorage('./config/' + taddr_no);
 const fs = require('fs');
 const Client = require('bitcoin-core');
 const Zcash = require('zcash');
@@ -9,7 +10,6 @@ const exec = require('child_process').exec;
 
 let host = local.getItem('rpchost') || local.getItem('rpcbind');
 if (!host) host = 'localhost';
-let taddr_no = process.argv[2]
 
 const cfg = {
   host: host,

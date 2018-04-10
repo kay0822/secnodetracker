@@ -1,6 +1,7 @@
 const SecNode = require('./SecNodeTracker').auto();
 const LocalStorage = require('node-localstorage').LocalStorage;
-const local = new LocalStorage('./config');
+let taddr_no = process.argv[2]
+const local = new LocalStorage('./config/' + taddr_no);
 const io = require('socket.io-client')
 const os = require('os');
 const pkg = require('./package.json');
