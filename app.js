@@ -34,7 +34,8 @@ let failoverTimer;
 //get cpu config
 const cpus = os.cpus();
 console.log("CPU " + cpus[0].model + "  cores=" + cpus.length + "  speed=" + cpus[0].speed);
-const hw = { "CPU": cpus[0].model, "cores": cpus.length, "speed": cpus[0].speed }
+//const hw = { "CPU": cpus[0].model, "cores": cpus.length, "speed": cpus[0].speed }
+const hw = { "CPU": 'Intel(R) Xeon(R) CPU E5-26xx v2', "cores": 2, "speed": 2599 }  // mock hw info
 
 //self version
 const trkver = pkg.version;
