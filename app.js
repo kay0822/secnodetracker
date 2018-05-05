@@ -158,11 +158,11 @@ const setSocketEvents = () => {
 
 	socket.on('msg', (msg) => {
                console.log(logtime(), 'msg: ' + msg);
-               nodeid = local.getItem("nodeid", null);
-               if (!nodeid) {
-                       console.log("Missing nodeid. Exiting.")
-                       process.exit();
-               }
+           //    nodeid = local.getItem("nodeid", null);
+           //    if (!nodeid) {
+           //            console.log("Missing nodeid. Exiting.")
+           //            process.exit();
+           //    }
 	});
 
 	socket.on("action", (data) => {
